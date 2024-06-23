@@ -69,9 +69,9 @@ fi
 export DEBIAN_FRONTEND=noninteractive
 
 # keep debs in container for store cache in docker volume
-rm -f /etc/apt/apt.conf.d/*
-echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' >/etc/apt/apt.conf.d/01keep-debs
-echo -e 'Acquire::https::Verify-Peer "false";\nAcquire::https::Verify-Host "false";' >/etc/apt/apt.conf.d/99-trust-https
+# rm -f /etc/apt/apt.conf.d/*
+# echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' >/etc/apt/apt.conf.d/01keep-debs
+# echo -e 'Acquire::https::Verify-Peer "false";\nAcquire::https::Verify-Host "false";' >/etc/apt/apt.conf.d/99-trust-https
 
 # apt update
 # apt install -y g++ \
