@@ -73,20 +73,20 @@ rm -f /etc/apt/apt.conf.d/*
 echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' >/etc/apt/apt.conf.d/01keep-debs
 echo -e 'Acquire::https::Verify-Peer "false";\nAcquire::https::Verify-Host "false";' >/etc/apt/apt.conf.d/99-trust-https
 
-apt update
-apt install -y g++ \
-  make \
-  libtool \
-  jq \
-  pkgconf \
-  file \
-  tcl \
-  autoconf \
-  automake \
-  autopoint \
-  patch \
-  wget \
-  unzip
+# apt update
+# apt install -y g++ \
+#   make \
+#   libtool \
+#   jq \
+#   pkgconf \
+#   file \
+#   tcl \
+#   autoconf \
+#   automake \
+#   autopoint \
+#   patch \
+#   wget \
+#   unzip
 
 BUILD_ARCH="$(gcc -dumpmachine)"
 TARGET_ARCH="${CROSS_HOST%%-*}"
