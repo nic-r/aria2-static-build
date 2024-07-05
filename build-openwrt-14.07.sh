@@ -152,6 +152,9 @@ BUILD_INFO="${SELF_DIR}/build_info.md"
 mkdir -p "${SELF_DIR}/downloads/"
 export DOWNLOADS_DIR="${SELF_DIR}/downloads"
 
+mkdir -p "${SELF_DIR}/src"
+export SRC_DIR="${SELF_DIR}/src"
+
 if [ x"${USE_ZLIB_NG}" = x1 ]; then
   ZLIB=zlib-ng
 else
