@@ -55,7 +55,7 @@ retry() {
 }
 
 source /etc/os-release
-dpkg --add-architecture i386
+sudo dpkg --add-architecture i386
 # Ubuntu mirror for local building
 if [ x"${USE_CHINA_MIRROR}" = x1 ]; then
   cat >/etc/apt/sources.list <<EOF
@@ -122,7 +122,7 @@ case "${TARGET_HOST}" in
   ;;
 *)
   TARGET_HOST=Linux
-  apt install -y "qemu-user-static"
+  sudo apt install -y "qemu-user-static"
   RUNNER_CHECKER="qemu-${TARGET_ARCH}-static"
   ;;
 esac
