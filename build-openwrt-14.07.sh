@@ -485,8 +485,8 @@ test_build() {
   echo "================================================"
 }
 
-prepare_cmake
-prepare_ninja
+# prepare_cmake
+# prepare_ninja
 prepare_zlib
 prepare_xz
 prepare_ssl
