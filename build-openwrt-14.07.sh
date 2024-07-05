@@ -14,6 +14,9 @@ export USE_LIBRESSL=0
 
 echo "ARIA2_VER: [$ARIA2_VER]"
 
+export CROSS_HOST="mipsel-openwrt-linux"
+export CROSS_ROOT="$HOME/Downloads/openwrt/OpenWrt-Toolchain-ramips-for-mipsel_24kec+dsp-gcc-4.8-linaro_uClibc-0.9.33.2/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2"
+
 # value from: https://musl.cc/ (without -cross or -native)
 # export CROSS_HOST="${CROSS_HOST:-arm-linux-musleabi}"
 # value from openssl source: ./Configure LIST
@@ -24,7 +27,7 @@ arm-linux*)
 aarch64-linux*)
   export OPENSSL_COMPILER=linux-aarch64
   ;;
-mips-linux* | mipsel-linux*)
+mips-linux* | mipsel-linux* | mipsel-openwrt-linux)
   export OPENSSL_COMPILER=linux-mips32
   ;;
 mips64-linux*)
@@ -104,6 +107,9 @@ case "${TARGET_ARCH}" in
   ;;
 "arm"*)
   TARGET_ARCH=arm
+  ;;
+"mipsel"*)
+  TARGET_ARCH=mipsel
   ;;
 esac
 case "${TARGET_HOST}" in
