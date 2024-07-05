@@ -7,6 +7,13 @@
 
 set -o pipefail
 
+export ARIA2_VER="${ARIA2_VER:-"1.37.0"}"
+export USE_CHINA_MIRROR=0
+export USE_ZLIB_NG=0
+export USE_LIBRESSL=0
+
+echo "ARIA2_VER: [$ARIA2_VER]"
+
 # value from: https://musl.cc/ (without -cross or -native)
 # export CROSS_HOST="${CROSS_HOST:-arm-linux-musleabi}"
 # value from openssl source: ./Configure LIST
