@@ -318,8 +318,10 @@ prepare_ssl() {
       echo "- libressl: ${libressl_ver}, source: ${libressl_latest_url:-cached libressl}" >>"${BUILD_INFO}"
     else
       # openssl
-      openssl_filename="$(retry wget -qO- --compression=auto https://www.openssl.org/source/ \| grep -o "'href=\"openssl-3.*tar.gz\"'" \| grep -o "'[^\"]*.tar.gz'" \| sort -nr \| head -1)"
-      openssl_ver="$(echo "${openssl_filename}" | sed -r 's/openssl-(.+)\.tar\.gz/\1/')"
+    #   openssl_filename="$(retry wget -qO- --compression=auto https://www.openssl.org/source/ \| grep -o "'href=\"openssl-3.*tar.gz\"'" \| grep -o "'[^\"]*.tar.gz'" \| sort -nr \| head -1)"
+    #   openssl_ver="$(echo "${openssl_filename}" | sed -r 's/openssl-(.+)\.tar\.gz/\1/')"
+      openssl_filename="OpenSSL_1_0_2d.tar.gz"
+      openssl_ver="OpenSSL_1_0_2d"
       openssl_latest_url="https://github.com/openssl/openssl/archive/refs/tags/${openssl_filename}"
       if [ x"${USE_CHINA_MIRROR}" = x1 ]; then
         openssl_latest_url="https://mirror.ghproxy.com/${openssl_latest_url}"
@@ -328,10 +330,11 @@ prepare_ssl() {
         retry wget -cT10 -O "${DOWNLOADS_DIR}/openssl-${openssl_ver}.tar.gz.part" "${openssl_latest_url}"
         mv -fv "${DOWNLOADS_DIR}/openssl-${openssl_ver}.tar.gz.part" "${DOWNLOADS_DIR}/openssl-${openssl_ver}.tar.gz"
       fi
-      mkdir -p "/usr/src/openssl-${openssl_ver}"
-      tar -zxf "${DOWNLOADS_DIR}/openssl-${openssl_ver}.tar.gz" --strip-components=1 -C "/usr/src/openssl-${openssl_ver}"
-      cd "/usr/src/openssl-${openssl_ver}"
-      ./Configure -static --cross-compile-prefix="${CROSS_HOST}-" --prefix="${CROSS_PREFIX}" "${OPENSSL_COMPILER}" --openssldir=/etc/ssl
+      mkdir -p "$SRC_DIR/openssl-${openssl_ver}"
+      tar -zxf "${DOWNLOADS_DIR}/openssl-${openssl_ver}.tar.gz" --strip-components=1 -C "$SRC_DIR/openssl-${openssl_ver}"
+      cd "$SRC_DIR/openssl-${openssl_ver}"
+    #   ./Configure -static --cross-compile-prefix="${CROSS_HOST}-" --prefix="${CROSS_PREFIX}" "${OPENSSL_COMPILER}" --openssldir=/etc/ssl
+      ./Configure --cross-compile-prefix="${CROSS_HOST}-" --prefix="${CROSS_PREFIX}" "${OPENSSL_COMPILER}" --openssldir="$SRC_DIR/etc/ssl" shared zlib
       make -j$(nproc)
       make install_sw
       openssl_ver="$(grep Version: "${CROSS_PREFIX}"/lib*/pkgconfig/openssl.pc)"
