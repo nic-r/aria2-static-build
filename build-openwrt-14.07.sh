@@ -461,9 +461,9 @@ build_aria2() {
     retry wget -cT10 -O "${DOWNLOADS_DIR}/aria2-${aria2_tag}.tar.gz.part" "${aria2_latest_url}"
     mv -fv "${DOWNLOADS_DIR}/aria2-${aria2_tag}.tar.gz.part" "${DOWNLOADS_DIR}/aria2-${aria2_tag}.tar.gz"
   fi
-  mkdir -p "/usr/src/aria2-${aria2_tag}"
-  tar -zxf "${DOWNLOADS_DIR}/aria2-${aria2_tag}.tar.gz" --strip-components=1 -C "/usr/src/aria2-${aria2_tag}"
-  cd "/usr/src/aria2-${aria2_tag}"
+  mkdir -p "$SRC_DIR/aria2-${aria2_tag}"
+  tar -zxf "${DOWNLOADS_DIR}/aria2-${aria2_tag}.tar.gz" --strip-components=1 -C "$SRC_DIR/aria2-${aria2_tag}"
+  cd "$SRC_DIR/aria2-${aria2_tag}"
   if [ ! -f ./configure ]; then
     autoreconf -i
   fi
@@ -472,7 +472,9 @@ build_aria2() {
   # else
   #   ARIA2_EXT_CONF='--with-ca-bundle=/etc/ssl/certs/ca-certificates.crt'
   fi
-  ./configure --host="${CROSS_HOST}" --prefix="${CROSS_PREFIX}" --enable-static --disable-shared --enable-silent-rules ARIA2_STATIC=yes ${ARIA2_EXT_CONF}
+  ARIA2_EXT_CONF='--without-libcares --without-sqlite3 --without-libssh2'
+#   ./configure --host="${CROSS_HOST}" --prefix="${CROSS_PREFIX}" --enable-static --disable-shared --enable-silent-rules ARIA2_STATIC=yes ${ARIA2_EXT_CONF}
+  ./configure --host="${CROSS_HOST}" --prefix="${CROSS_PREFIX}" --enable-silent-rules ${ARIA2_EXT_CONF} LIBS="-ldl"
   make -j$(nproc)
   make install
   echo "- aria2: source: ${aria2_latest_url:-cached aria2}" >>"${BUILD_INFO}"
