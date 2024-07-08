@@ -137,6 +137,7 @@ case "${TARGET_HOST}" in
   TARGET_HOST=Linux
   sudo apt install -y "qemu-user-static"
   RUNNER_CHECKER="qemu-${TARGET_ARCH}-static"
+  RUNNER_CHECKER_OPINIONS="-cpu 24KEc -L $CROSS_ROOT"
   ;;
 esac
 
@@ -483,7 +484,7 @@ build_aria2() {
 
 get_build_info() {
   echo "============= ARIA2 VER INFO ==================="
-  ARIA2_VER_INFO="$("${RUNNER_CHECKER}" "${CROSS_PREFIX}/bin/aria2c"* --version 2>/dev/null)"
+  ARIA2_VER_INFO="$("${RUNNER_CHECKER}" $RUNNER_CHECKER_OPINIONS "${CROSS_PREFIX}/bin/aria2c" --version 2>/dev/null)"
   echo "${ARIA2_VER_INFO}"
   echo "================================================"
 
@@ -494,10 +495,10 @@ get_build_info() {
 }
 
 test_build() {
-  # get release
-  cp -fv "${CROSS_PREFIX}/bin/"aria2* "${SELF_DIR}"
   echo "============= ARIA2 TEST DOWNLOAD =============="
-  "${RUNNER_CHECKER}" "${CROSS_PREFIX}/bin/aria2c"* -t 10 --console-log-level=debug --http-accept-gzip=true https://github.com/ -d /tmp -o test
+  rm test.html 2&>/dev/null
+  ARIA2C_OPINIONS="--no-conf --check-certificate=false --dir=${SELF_DIR}"
+  "${RUNNER_CHECKER}" $RUNNER_CHECKER_OPINIONS "${CROSS_PREFIX}/bin/aria2c" $ARIA2C_OPINIONS -t 10 --console-log-level=debug --http-accept-gzip=true https://github.com/ -o test.html
   echo "================================================"
 }
 
@@ -513,8 +514,8 @@ prepare_libxml2
 build_aria2
 
 get_build_info
-# mips test will hang, I don't know why. So I just ignore test failures.
-# test_build
+
+test_build
 
 # get release
 cp -fv "${CROSS_PREFIX}/bin/"aria2* "${SELF_DIR}"
