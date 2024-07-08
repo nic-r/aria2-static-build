@@ -14,6 +14,14 @@ export USE_LIBRESSL=0
 
 echo "ARIA2_VER: [$ARIA2_VER]"
 
+SELF_DIR="$(dirname "$(realpath "${0}")")"
+# Create download cache directory
+mkdir -p "${SELF_DIR}/downloads/"
+export DOWNLOADS_DIR="${SELF_DIR}/downloads"
+# Create src directory
+mkdir -p "${SELF_DIR}/src"
+export SRC_DIR="${SELF_DIR}/src"
+
 export CROSS_HOST="mipsel-openwrt-linux"
 export CROSS_ROOT="$HOME/Downloads/openwrt/OpenWrt-Toolchain-ramips-for-mipsel_24kec+dsp-gcc-4.8-linaro_uClibc-0.9.33.2/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2"
 
@@ -146,15 +154,7 @@ export CROSS_PREFIX="${CROSS_ROOT}/${CROSS_HOST}"
 export PKG_CONFIG_PATH="${CROSS_PREFIX}/lib64/pkgconfig:${CROSS_PREFIX}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 # export LDFLAGS="-L${CROSS_PREFIX}/lib64 -L${CROSS_PREFIX}/lib -I${CROSS_PREFIX}/include -s -static --static"
 export LDFLAGS="-L${CROSS_PREFIX}/lib64 -L${CROSS_PREFIX}/lib -I${CROSS_PREFIX}/include"
-SELF_DIR="$(dirname "$(realpath "${0}")")"
 BUILD_INFO="${SELF_DIR}/build_info.md"
-
-# Create download cache directory
-mkdir -p "${SELF_DIR}/downloads/"
-export DOWNLOADS_DIR="${SELF_DIR}/downloads"
-
-mkdir -p "${SELF_DIR}/src"
-export SRC_DIR="${SELF_DIR}/src"
 
 if [ x"${USE_ZLIB_NG}" = x1 ]; then
   ZLIB=zlib-ng
