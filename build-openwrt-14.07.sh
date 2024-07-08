@@ -517,5 +517,5 @@ get_build_info
 
 test_build
 
-# get release
-cp -fv "${CROSS_PREFIX}/bin/"aria2* "${SELF_DIR}"
+# get release and strip it
+"${CROSS_HOST}-strip" -s "${CROSS_PREFIX}/bin/aria2c" -o "${SELF_DIR}/aria2c_${ARIA2_VER}"
